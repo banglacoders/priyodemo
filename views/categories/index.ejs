@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <% include ../partials/header %>
+</head>
+<body>
+<div class="container">
+    <% include ../partials/navbar %>
+    <hr>
+    <div class="row">
+        <form action="/categories" method="post">
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label for="category">Add Category</label>
+                    <input type="text" class="form-control" name="name" placeholder="Category name" required>
+                </div>
+            </div>
+            <button style="margin-top:25px;" type="submit" class="btn btn-success">Submit</button>
+        </form>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col-sm-12">
+            <h3>List of categories:</h3>
+            <br>
+            <table class="table table-hover table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Name</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% for (var i = 0; i < categories.length; i++) { %>
+                        <tr>
+                            <th scope="row"><%= i+1 %></th>
+                            <td><%= categories[i].name %></td>
+                            <td>
+                                <a href="/categories/edit/<%= categories[i]._id %>"><button class="btn btn-warning">Edit</button></a>
+                                <a href="/categories/delete/<%= categories[i]._id %>"><button class="btn btn-danger">Delete</button></a>
+                            </td>
+                        </tr>
+                    <% }%>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<% include ../partials/scripts %>
+</body>
+</html>

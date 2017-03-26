@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <% include ../partials/header %>
+</head>
+<body>
+<div class="container">
+    <% include ../partials/navbar %>
+    <hr>
+    <a href="/articles/create"><button class="btn btn-primary">Create Articles</button></a>
+    <hr>
+    <div class="row">
+        <div class="col-sm-12">
+            <h3>List of articles:</h3>
+            <div class="row">
+                <form action="articles/search" method="get">
+                    <div class="form-group col-sm-5">
+                        <input id="search" type="text" name="q" class="form-control" placeholder="Search">
+                    </div>
+                    <div class="form-group col-sm-3">
+                        <input type="text" id="datefrom" name="datefrom" class="form-control" placeholder="Date From">
+                    </div>
+                    <div class="form-group col-sm-3">
+                        <input type="text" id="dateto" name="dateto" class="form-control" placeholder="Date To">
+                    </div>
+                    <button type="submit" class="btn btn-default">Submit</button>
+                </form>
+            </div>
+            <br>
+            <table class="table table-hover table-bordered table-striped">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Title</th>
+                    <th>Description</th>
+                    <th>Date</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody id="tabletr">
+                <% for (var i = 0; i < articles.length; i++) { %>
+                <tr>
+                    <th scope="row"><%= i+1 %></th>
+                    <td><%= articles[i].title %></td>
+                    <td><%= articles[i].description %></td>
+                    <td><%= articles[i].date %></td>
+                    <td>
+                        <a href="/articles/view/<%= articles[i]._id %>"><button class="btn btn-primary">View</button></a>
+                        <a href="/articles/edit/<%= articles[i]._id %>"><button class="btn btn-warning">Edit</button></a>
+                        <a href="/articles/delete/<%= articles[i]._id %>"><button class="btn btn-danger">Delete</button></a>
+                    </td>
+                </tr>
+                <% }%>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<% include ../partials/scripts %>
+<script>
+    $(document).ready(function(){
+        $( "#datefrom" ).datepicker({ dateFormat: 'dd-mm-yy' });
+        $( "#dateto" ).datepicker({ dateFormat: 'dd-mm-yy' });
+
+        $("#search").keyup(function(){
+            var search_term = $('#search').val();
+            $.ajax({
+                method : 'POST',
+                url : '/articles/search',
+                data : { search_term : search_term},
+                dataType : 'json',
+                success : function(json) {
+                    var data = json.hits.hits.map(function (hit) {
+                        return hit;
+                    });
+
+                    $("#tabletr").html('');
+                    for (var i = 0; i < data.length; i++) {
+                        var html = '';
+                        html += '<tr>';
+                        html += '<th scope="row">'+ (i+1) +'</th>';
+                        html += '<td>' + data[i]._source.title + '</td>';
+                        html += '<td>' + data[i]._source.description + '</td>';
+                        html += '<td>' + data[i]._source.date + '</td>';
+                        html += '<td>';
+                        html += '<a href="/articles/view/' + data[i]._id + '"><button class="btn btn-primary">View</button></a>';
+                        html += '<a href="/articles/edit/' + data[i]._id + '"><button class="btn btn-warning">Edit</button></a>';
+                        html += '<a href="/articles/delete/' + data[i]._id + '"><button class="btn btn-danger">Delete</button></a>';
+                        html += '</td>';
+                        html += '</tr>';
+
+                        $("#tabletr").append(html);
+                    }
+                },
+                error : function(error) {
+                    console.log(error);
+                }
+            });
+        });
+    });
+</script></body>
+</html>

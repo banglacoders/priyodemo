@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <% include ../partials/header %>
+</head>
+<body>
+<div class="container">
+    <% include ../partials/navbar %>
+    <hr>
+    <div class="row">
+        <div class="col-sm-12">
+            <dl>
+                <dt>Id</dt>
+                <dd><%= article._id  %></dd>
+                <br>
+                <dt>Title</dt>
+                <dd><%= article.title  %></dd>
+                <br>
+                <dt>Description</dt>
+                <dd><%= article.description  %></dd>
+                <br>
+                <dt>Categories</dt>
+                <ul>
+                    <% for (var i = 0; i < article.category.length; i++) { %>
+                    <li><%= article.category[i].name %></li>
+                    <% }%>
+                </ul>
+            </dl>
+        </div>
+    </div>
+</div>
+<% include ../partials/scripts %>
+</body>
+</html>

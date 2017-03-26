@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <% include ../partials/header %>
+</head>
+<body>
+<div class="container">
+    <% include ../partials/navbar %>
+    <hr>
+    <div class="row">
+        <div class="col-sm-12">
+            <form action="/articles/update/<%= article._id %>" method="post">
+                <div class="form-group">
+                    <label for="category">Article title</label>
+                    <input type="text" class="form-control" value="<%= article.title %>" name="title" placeholder="Article title" required>
+                </div>
+                <div class="form-group">
+                    <label for="category">Article description</label>
+                    <input type="text" class="form-control" value="<%= article.description %>" name="description" placeholder="Article title" required>
+                </div>
+                <div class="form-group">
+                    <label for="category">Categories</label>
+                    <% for (var i = 0; i < categories.length; i++) { %>
+                        <% var count = 0; %>
+                        <% for (var j = 0; j < article.category.length; j++) { %>
+                            <% if (article.category[j].name == categories[i].name) {%>
+                            <%  count++; %>
+                            <% }%>
+                        <% } %>
+                        <% if (count) {%>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="category" value="<%= categories[i]._id %>" checked> <%= categories[i].name %>
+                                </label>
+                            </div>
+                        <% } else {%>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="category" value="<%= categories[i]._id %>" > <%= categories[i].name %>
+                                </label>
+                            </div>
+                        <% }%>
+                    <% }%>
+                </div>
+                <button type="submit" class="btn btn-success">Submit</button>
+            </form>
+        </div>
+    </div>
+</div>
+<% include ../partials/scripts %>
+</body>
+</html>
