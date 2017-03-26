@@ -14,16 +14,9 @@
             <h3>List of articles:</h3>
             <div class="row">
                 <form action="articles/search" method="get">
-                    <div class="form-group col-sm-5">
-                        <input id="search" type="text" name="q" class="form-control" placeholder="Search">
+                    <div class="form-group col-sm-12">
+                        <input id="search" type="text" name="q" class="form-control" placeholder="Search by Article title, description or category name">
                     </div>
-                    <div class="form-group col-sm-3">
-                        <input type="text" id="datefrom" name="datefrom" class="form-control" placeholder="Date From">
-                    </div>
-                    <div class="form-group col-sm-3">
-                        <input type="text" id="dateto" name="dateto" class="form-control" placeholder="Date To">
-                    </div>
-                    <button type="submit" class="btn btn-default">Submit</button>
                 </form>
             </div>
             <br>
@@ -59,9 +52,6 @@
 <% include ../partials/scripts %>
 <script>
     $(document).ready(function(){
-        $( "#datefrom" ).datepicker({ dateFormat: 'dd-mm-yy' });
-        $( "#dateto" ).datepicker({ dateFormat: 'dd-mm-yy' });
-
         $("#search").keyup(function(){
             var search_term = $('#search').val();
             $.ajax({
@@ -83,9 +73,9 @@
                         html += '<td>' + data[i]._source.description + '</td>';
                         html += '<td>' + data[i]._source.date + '</td>';
                         html += '<td>';
-                        html += '<a href="/articles/view/' + data[i]._id + '"><button class="btn btn-primary">View</button></a>';
-                        html += '<a href="/articles/edit/' + data[i]._id + '"><button class="btn btn-warning">Edit</button></a>';
-                        html += '<a href="/articles/delete/' + data[i]._id + '"><button class="btn btn-danger">Delete</button></a>';
+                        html += '<a href="/articles/view/' + data[i]._id + '"><button class="btn btn-primary">View</button></a> ';
+                        html += '<a href="/articles/edit/' + data[i]._id + '"><button class="btn btn-warning">Edit</button></a> ';
+                        html += '<a href="/articles/delete/' + data[i]._id + '"><button class="btn btn-danger">Delete</button></a> ';
                         html += '</td>';
                         html += '</tr>';
 

@@ -13,26 +13,13 @@ router.get('/', function(req, res, next){
     });
 });
 
-//Get single
-router.get('/:id', function (req, res, next) {
-    Category.findOne({
-        _id : req.params.id
-    }, function (err, category) {
-        if (err) {
-            res.send(err);
-        } else {
-            res.send(category)
-        }
-    });
-});
-
 //Edit
 router.get('/edit/:id', function (req, res, next) {
     Category.findOne({
         _id : req.params.id
     }, function (err, category) {
         if (err) {
-            next(err);
+            res.render('error/message', {title : err.name, body : err.message});
         } else {
             res.render('categories/edit', { category : category });
         }
@@ -42,13 +29,10 @@ router.get('/edit/:id', function (req, res, next) {
 //Save
 router.post('/', function (req, res, next) {
     var category = new Category();
-    if (req.body.name == '') {
-        //name empty error
-    }
     category.name = req.body.name;
     category.save(function(err){
         if (err) {
-            res.send(err);
+            res.render('error/message', {title : err.name, body : err.message});
         } else {
             res.redirect('/categories');
         }
@@ -57,20 +41,16 @@ router.post('/', function (req, res, next) {
 
 //Update
 router.post('/update/:id', function (req, res, next) {
-    if (req.params.id == '') {
-        //name empty error
-    }
-
     Category.findOne({
         _id : req.params.id
     }, function (err, category) {
         if (err) {
-            res.send(err);
+            res.render('error/message', {title : err.name, body : err.message});
         } else {
             category.name = req.body.name;
             category.save(function (err, updated) {
                 if (err) {
-                    res.send(err);
+                    res.render('error/message', {title : err.name, body : err.message});
                 } else {
                     res.redirect('/categories');
                 }
@@ -80,18 +60,15 @@ router.post('/update/:id', function (req, res, next) {
 });
 
 router.get('/delete/:id', function (req, res, next) {
-    if (req.params.id == '') {
-        //empty id error
-    }
     Category.findOne({
         _id : req.params.id
     }, function (err, category) {
         if (err) {
-            res.send(err);
+            res.render('error/message', {title : err.name, body : err.message});
         } else {
             category.remove(function (err, deleted) {
                 if (err) {
-                    res.send(err);
+                    res.render('error/message', {title : err.name, body : err.message});
                 } else {
                     res.redirect('/categories');
                 }

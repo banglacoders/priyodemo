@@ -6,6 +6,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 
+//Connect with database
 mongoose.connect('mongodb://127.0.0.1:27017/priyo', function(err){
     if (err) {
         console.log(err);
@@ -14,6 +15,7 @@ mongoose.connect('mongodb://127.0.0.1:27017/priyo', function(err){
     }
 });
 
+//Routes
 var index = require('./routes/index');
 var categories = require('./routes/category');
 var articles = require('./routes/article');
@@ -50,7 +52,7 @@ app.use(function(err, req, res, next) {
 
   // render the error page
   res.status(err.status || 500);
-  res.render('error');
+  res.render('error/message', {title : err.name, body : err.message});
 });
 
 module.exports = app;

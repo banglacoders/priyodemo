@@ -9,10 +9,4 @@ var CategorySchema = new Schema({
     name : { type : String, unique : true, lowercase : true}
 });
 
-CategorySchema.plugin(mongoosastic, {
-    hosts: [
-        'localhost:9200'
-    ]
-});
-
 module.exports = mongoose.model('Category', CategorySchema);
